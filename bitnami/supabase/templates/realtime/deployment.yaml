@@ -131,37 +131,7 @@ spec:
           args:
             - -ec
             - |
-              realtime eval Realtime.Release.migrate && realtime eval 'Realtime.Release.seeds(Realtime.Repo)' && \
-              curl -X POST 'http://{{ include "supabase.kong.fullname" . }}:{{ .Values.kong.service.ports.proxyHttp }}/realtime/v1/api/tenants' \
-              -H 'Content-Type: application/json' \
-              -H 'Authorization: Bearer $API_JWT_SERVICE_KEY' \
-              -H 'apikey: $API_JWT_SERVICE_KEY' \
-              -d '{
-                "tenant": {
-                  "name": "$APP_NAME",
-                  "external_id": "$APP_NAME",
-                  "jwt_secret": "$API_JWT_SECRET",
-                  "jwt_jwks": null,
-                  "extensions": [
-                    {
-                      "type": "$SLOT_NAME",
-                      "settings": {
-                        "db_name": "$DB_NAME",
-                        "db_host": "$DB_HOST",
-                        "db_user": "$DB_USER",
-                        "db_password": "$DB_PASSWORD",
-                        "db_port": "$DB_PORT",
-                        "region": "$REPLICATION_REGION",
-                        "poll_interval_ms": "$REPLICATION_POLL_INTERVAL",
-                        "poll_max_record_bytes": "$REPLICATION_POLL_MAX_RECORD_BYTES",
-                        "ssl_enforced": "$REPLICATION_SSL_ENFORCED"
-                      }
-                    }
-                  ],
-                  "notify_private_alpha": "$NOTIFY_PRIVATE_ALPHA"
-                }
-              }' && \
-              realtime start
+              realtime eval Realtime.Release.migrate && realtime eval 'Realtime.Release.seeds(Realtime.Repo)' && realtime start
           {{- end }}
           env:
             - name: DB_USER
@@ -182,11 +152,6 @@ spec:
                 secretKeyRef:
                   name: {{ include "supabase.jwt.secretName" . | quote }}
                   key: {{ include "supabase.jwt.secretKey" . | quote }}
-            - name: API_JWT_SERVICE_KEY
-              valueFrom:
-                secretKeyRef:
-                  name: {{ include "supabase.jwt.secretName" . | quote }}
-                  key: {{ include "supabase.jwt.serviceSecretKey" . | quote }}
             - name: SECRET_KEY_BASE
               valueFrom:
                 secretKeyRef:
