@@ -157,11 +157,6 @@ spec:
                 secretKeyRef:
                   name: {{ include "supabase.realtime.secretName" . | quote }}
                   key: {{ include "supabase.realtime.secretKey" . | quote }}
-            - name: DB_ENC_KEY
-              valueFrom:
-                secretKeyRef:
-                  name: {{ include "supabase.realtime.secretName" . | quote }}
-                  key: {{ include "supabase.realtime.encryptionSecretKey" . | quote }}
             {{- if .Values.realtime.extraEnvVars }}
             {{- include "common.tplvalues.render" (dict "value" .Values.realtime.extraEnvVars "context" $) | nindent 12 }}
             {{- end }}
