@@ -7,7 +7,7 @@ SPDX-License-Identifier: APACHE-2.0
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ template "supabase.realtime.fullname" . }}
+  name: realtime-dev
   namespace: {{ include "common.names.namespace" . | quote }}
   {{- $versionLabel := dict "app.kubernetes.io/version" ( include "common.images.version" ( dict "imageRoot" .Values.realtime.image "chart" .Chart ) ) }}
   {{- $labels := include "common.tplvalues.merge" ( dict "values" ( list .Values.commonLabels $versionLabel ) "context" . ) }}
@@ -61,7 +61,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: realtime-dev
+  name: {{ template "supabase.realtime.fullname" . }}
   namespace: {{ include "common.names.namespace" . | quote }}
   {{- $versionLabel := dict "app.kubernetes.io/version" ( include "common.images.version" ( dict "imageRoot" .Values.realtime.image "chart" .Chart ) ) }}
   {{- $labels := include "common.tplvalues.merge" ( dict "values" ( list .Values.commonLabels $versionLabel ) "context" . ) }}
@@ -74,5 +74,5 @@ metadata:
   {{- end }}
 spec:
   type: ExternalName
-  externalName: {{ template "supabase.realtime.fullname" . }}.{{ include "common.names.namespace" . }}.svc.cluster.local
+  externalName: realtime-dev.{{ include "common.names.namespace" . }}.svc.cluster.local
 {{- end }}
