@@ -3354,8 +3354,7 @@ postgresql:
     resources: {}
     ## @param postgresql.primary.extendedConfiguration Extended PostgreSQL configuration
     ##
-    extendedConfiguration: |
-      wal_level = logical
+    extendedConfiguration: "wal_level = logical"
 
 ## External PostgreSQL configuration
 ## All of these values are only used when postgresql.enabled is set to false
